@@ -8,6 +8,32 @@
     <script src="script.js" defer></script>
 </head>
 <body>
-    <h2>تطبيق المصاريف</h2>
+
+    <div class="app-container">
+        <h2>💰 تطبيق المصاريف</h2>
+
+        <div class="input-box">
+            <input type="text" id="expenseName" placeholder="اسم المصروف (مثلاً: وقود)">
+            <input type="number" id="expense" placeholder="المبلغ (ريال)">
+            <button onclick="addExpense()">➕ إضافة</button>
+        </div>
+
+        <div class="expenses-container">
+            <h3>📊 إجمالي المصاريف</h3>
+            <div class="expense-card"><p>اليوم</p><h4 id="dailyTotal">0 ريال</h4></div>
+            <div class="expense-card"><p>الأسبوع</p><h4 id="weeklyTotal">0 ريال</h4></div>
+            <div class="expense-card"><p>الشهر</p><h4 id="monthlyTotal">0 ريال</h4></div>
+            <div class="expense-card"><p>السنة</p><h4 id="yearlyTotal">0 ريال</h4></div>
+        </div>
+
+        <h3>📝 تفاصيل المصاريف</h3>
+        <ul id="expenseList"></ul>
+
+        <div class="settings">
+            <button onclick="toggleDarkMode()">🌙 تفعيل الدارك مود</button>
+            <button onclick="resetExpenses()" class="reset-btn">🗑 مسح البيانات</button>
+        </div>
+    </div>
+
 </body>
 </html>
