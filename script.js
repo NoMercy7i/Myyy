@@ -1,124 +1,65 @@
-/* إعدادات عامة */
-body {
-    font-family: 'Arial', sans-serif;
-    text-align: center;
-    background: #f7f8fc;
-    direction: rtl;
-    margin: 0;
-    padding: 0;
-    transition: background 0.3s, color 0.3s;
+let expenses = JSON.parse(localStorage.getItem("expenses")) || [];
+let darkMode = localStorage.getItem("darkMode") === "enabled";
+
+// تحميل الوضع الداكن عند فتح التطبيق
+if (darkMode) {
+    document.body.classList.add("dark-mode");
 }
 
-/* وضع الدارك مود */
-body.dark-mode {
-    background: #121212;
-    color: white;
+function addExpense() {
+    let name = document.getElementById("expenseName").value.trim();
+    let amount = parseFloat(document.getElementById("expense").value);
+
+    if (!name || isNaN(amount) || amount <= 0) {
+        alert("رجاءً أدخل اسم المصروف والمبلغ بشكل صحيح!");
+        return;
+    }
+
+    let today = new Date().toISOString().split("T")[0];
+    expenses.push({ name, amount, date: today });
+
+    localStorage.setItem("expenses", JSON.stringify(expenses));
+
+    document.getElementById("expenseName").value = "";
+    document.getElementById("expense").value = "";
+
+    updateTotals();
 }
 
-/* الحاوية الرئيسية */
-.app-container {
-    max-width: 400px;
-    margin: 50px auto;
-    padding: 20px;
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-    transition: background 0.3s, color 0.3s;
+function updateTotals() {
+    let today = new Date().toISOString().split("T")[0];
+    let dailyTotal = 0, weeklyTotal = 0, monthlyTotal = 0, yearlyTotal = 0;
+
+    let list = document.getElementById("expenseList");
+    list.innerHTML = "";
+
+    expenses.forEach(expense => {
+        let expenseDate = new Date(expense.date);
+        let expenseYear = expenseDate.getFullYear();
+
+        if (expense.date === today) dailyTotal += expense.amount;
+        if (expenseYear === new Date().getFullYear()) yearlyTotal += expense.amount;
+
+        let listItem = document.createElement("li");
+        listItem.textContent = `📌 ${expense.name} - ${expense.amount} ريال`;
+        list.appendChild(listItem);
+    });
+
+    document.getElementById("dailyTotal").innerText = dailyTotal + " ريال";
+    document.getElementById("yearlyTotal").innerText = yearlyTotal + " ريال";
 }
 
-.dark-mode .app-container {
-    background: #1e1e1e;
+function resetExpenses() {
+    if (confirm("هل أنت متأكد من مسح جميع البيانات؟")) {
+        expenses = [];
+        localStorage.removeItem("expenses");
+        updateTotals();
+    }
 }
 
-/* العنوان */
-h2 {
-    font-size: 24px;
-    margin-bottom: 10px;
+function toggleDarkMode() {
+    document.body.classList.toggle("dark-mode");
+    localStorage.setItem("darkMode", document.body.classList.contains("dark-mode") ? "enabled" : "disabled");
 }
 
-/* إدخال البيانات */
-.input-box {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-bottom: 20px;
-}
-
-input {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    font-size: 16px;
-    text-align: center;
-    outline: none;
-    transition: background 0.3s, color 0.3s;
-}
-
-.dark-mode input {
-    background: #333;
-    color: white;
-}
-
-/* زر الإضافة */
-button {
-    background: #007bff;
-    color: white;
-    border: none;
-    padding: 10px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: 0.3s;
-}
-
-button:hover {
-    background: #0056b3;
-}
-
-/* المصاريف */
-.expenses-container {
-    margin-top: 15px;
-}
-
-.expense-card {
-    background: #fff;
-    padding: 15px;
-    border-radius: 10px;
-    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
-    margin: 10px 0;
-}
-
-.dark-mode .expense-card {
-    background: #333;
-}
-
-/* قائمة المصاريف */
-ul {
-    list-style: none;
-    padding: 0;
-}
-
-li {
-    background: #eee;
-    padding: 10px;
-    margin: 5px 0;
-    border-radius: 6px;
-}
-
-.dark-mode li {
-    background: #444;
-}
-
-/* إعدادات */
-.settings {
-    margin-top: 20px;
-}
-
-.reset-btn {
-    background: #ff3b30;
-}
-
-.reset-btn:hover {
-    background: #c82333;
-}
+updateTotals();
