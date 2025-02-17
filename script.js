@@ -16,7 +16,17 @@ function addExpense() {
     }
 
     let today = new Date().toISOString().split("T")[0];
-    expenses.push({ name, amount, date: today });
+
+    // البحث إذا كان المصروف موجود بالفعل
+    let existingExpense = expenses.find(exp => exp.name === name);
+
+    if (existingExpense) {
+        // تحديث المبلغ بدلاً من إضافة إدخال جديد
+        existingExpense.amount += amount;
+    } else {
+        // إذا لم يكن موجودًا، يتم إضافته كإدخال جديد
+        expenses.push({ name, amount, date: today });
+    }
 
     localStorage.setItem("expenses", JSON.stringify(expenses));
 
@@ -28,14 +38,13 @@ function addExpense() {
 
 function updateTotals() {
     let today = new Date().toISOString().split("T")[0];
-    let dailyTotal = 0, weeklyTotal = 0, monthlyTotal = 0, yearlyTotal = 0;
+    let dailyTotal = 0, yearlyTotal = 0;
 
     let list = document.getElementById("expenseList");
     list.innerHTML = "";
 
     expenses.forEach(expense => {
-        let expenseDate = new Date(expense.date);
-        let expenseYear = expenseDate.getFullYear();
+        let expenseYear = new Date(expense.date).getFullYear();
 
         if (expense.date === today) dailyTotal += expense.amount;
         if (expenseYear === new Date().getFullYear()) yearlyTotal += expense.amount;
