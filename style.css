@@ -1,6 +1,6 @@
 /* إعدادات عامة */
 body {
-    font-family: 'Arial', sans-serif;
+    font-family: Arial, sans-serif;
     text-align: center;
     background: #f7f8fc;
     direction: rtl;
@@ -30,36 +30,6 @@ body.dark-mode {
     background: #1e1e1e;
 }
 
-/* العنوان */
-h2 {
-    font-size: 24px;
-    margin-bottom: 10px;
-}
-
-/* إدخال البيانات */
-.input-box {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-bottom: 20px;
-}
-
-input {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    font-size: 16px;
-    text-align: center;
-    outline: none;
-    transition: background 0.3s, color 0.3s;
-}
-
-.dark-mode input {
-    background: #333;
-    color: white;
-}
-
 /* زر الإضافة */
 button {
     background: #007bff;
@@ -76,40 +46,6 @@ button:hover {
     background: #0056b3;
 }
 
-/* المصاريف */
-.expenses-container {
-    margin-top: 15px;
-}
-
-.expense-card {
-    background: #fff;
-    padding: 15px;
-    border-radius: 10px;
-    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
-    margin: 10px 0;
-}
-
-.dark-mode .expense-card {
-    background: #333;
-}
-
-/* قائمة المصاريف */
-ul {
-    list-style: none;
-    padding: 0;
-}
-
-li {
-    background: #eee;
-    padding: 10px;
-    margin: 5px 0;
-    border-radius: 6px;
-}
-
-.dark-mode li {
-    background: #444;
-}
-
 /* إعدادات */
 .settings {
     margin-top: 20px;
@@ -121,4 +57,30 @@ li {
 
 .reset-btn:hover {
     background: #c82333;
+}
+
+/* نافذة تعديل المصاريف */
+.edit-box {
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background: #f1f1f1;
+    display: none;
+}
+
+.dark-mode .edit-box {
+    background: #333;
+    border-color: #555;
+}
+
+/* جعل اسم المصروف قابل للنقر */
+ul li span {
+    color: #007bff;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.dark-mode ul li span {
+    color: #80b3ff;
 }
