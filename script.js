@@ -1,7 +1,6 @@
 let expenses = JSON.parse(localStorage.getItem("expenses")) || [];
 let darkMode = localStorage.getItem("darkMode") === "enabled";
 
-// تحميل الوضع الداكن عند فتح التطبيق
 if (darkMode) {
     document.body.classList.add("dark-mode");
 }
@@ -16,23 +15,17 @@ function addExpense() {
     }
 
     let today = new Date().toISOString().split("T")[0];
-
-    // البحث إذا كان المصروف موجود بالفعل
     let existingExpense = expenses.find(exp => exp.name === name);
 
     if (existingExpense) {
-        // تحديث المبلغ بدلاً من إضافة إدخال جديد
         existingExpense.amount += amount;
     } else {
-        // إذا لم يكن موجودًا، يتم إضافته كإدخال جديد
         expenses.push({ name, amount, date: today });
     }
 
     localStorage.setItem("expenses", JSON.stringify(expenses));
-
     document.getElementById("expenseName").value = "";
     document.getElementById("expense").value = "";
-
     updateTotals();
 }
 
@@ -43,14 +36,14 @@ function updateTotals() {
     let list = document.getElementById("expenseList");
     list.innerHTML = "";
 
-    expenses.forEach(expense => {
+    expenses.forEach((expense, index) => {
         let expenseYear = new Date(expense.date).getFullYear();
 
         if (expense.date === today) dailyTotal += expense.amount;
         if (expenseYear === new Date().getFullYear()) yearlyTotal += expense.amount;
 
         let listItem = document.createElement("li");
-        listItem.textContent = `📌 ${expense.name} - ${expense.amount} ريال`;
+        listItem.innerHTML = `📌 <span onclick="editExpense(${index})">${expense.name}</span> - ${expense.amount} ريال`;
         list.appendChild(listItem);
     });
 
@@ -58,17 +51,23 @@ function updateTotals() {
     document.getElementById("yearlyTotal").innerText = yearlyTotal + " ريال";
 }
 
-function resetExpenses() {
-    if (confirm("هل أنت متأكد من مسح جميع البيانات؟")) {
-        expenses = [];
-        localStorage.removeItem("expenses");
-        updateTotals();
+let editIndex = -1;
+
+function editExpense(index) {
+    editIndex = index;
+    let expense = expenses[index];
+    document.getElementById("editExpenseName").innerText = `✏️ تعديل: ${expense.name}`;
+    document.getElementById("editExpenseAmount").value = "";
+    document.getElementById("editBox").style.display = "block";
+}
+
+function updateExpense() {
+    let newAmount = parseFloat(document.getElementById("editExpenseAmount").value);
+    if (isNaN(newAmount) || newAmount <= 0) {
+        alert("رجاءً أدخل مبلغ صحيح!");
+        return;
     }
-}
 
-function toggleDarkMode() {
-    document.body.classList.toggle("dark-mode");
-    localStorage.setItem("darkMode", document.body.classList.contains("dark-mode") ? "enabled" : "disabled");
-}
-
-updateTotals();
+    expenses[editIndex].amount += newAmount;
+    localStorage.setItem("expenses", JSON.stringify(expenses));
+    document.getElementById("edit
