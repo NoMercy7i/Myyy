@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="ar">
-<head> <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#007bff">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>تطبيق المصاريف</title>
@@ -29,6 +28,14 @@
 
         <h3>📝 تفاصيل المصاريف</h3>
         <ul id="expenseList"></ul>
+
+        <div class="edit-box" id="editBox" style="display: none;">
+            <h3>✏️ تعديل المصروف</h3>
+            <p id="editExpenseName"></p>
+            <input type="number" id="editExpenseAmount" placeholder="المبلغ الجديد">
+            <button onclick="updateExpense()">✔️ تحديث</button>
+            <button onclick="cancelEdit()">❌ إلغاء</button>
+        </div>
 
         <div class="settings">
             <button onclick="toggleDarkMode()">🌙 تفعيل الدارك مود</button>
