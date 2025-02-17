@@ -70,4 +70,25 @@ function updateExpense() {
 
     expenses[editIndex].amount += newAmount;
     localStorage.setItem("expenses", JSON.stringify(expenses));
-    document.getElementById("edit
+    document.getElementById("editBox").style.display = "none";
+    updateTotals();
+}
+
+function cancelEdit() {
+    document.getElementById("editBox").style.display = "none";
+}
+
+function toggleDarkMode() {
+    document.body.classList.toggle("dark-mode");
+    localStorage.setItem("darkMode", document.body.classList.contains("dark-mode") ? "enabled" : "disabled");
+}
+
+function resetExpenses() {
+    if (confirm("هل أنت متأكد من مسح جميع البيانات؟")) {
+        expenses = [];
+        localStorage.removeItem("expenses");
+        updateTotals();
+    }
+}
+
+updateTotals();
